@@ -1,28 +1,54 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import ReactDOM from "react-dom";
 
-class App extends Component {
+import "./App.css";
+
+// A react component which renders
+// a circle that changes color each second
+// from red -> green -> blue -> red and so on.
+
+class Circle extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      color: ["red", "black", "blue", "pink"],
+      currentColor: "green",
+      iterator: 0
+    };
+    this.changeColor = this.changeColor.bind(this);
+  }
+  componentDidMount() {
+    this.divyanshu = setInterval(() => {
+      this.changeColor();
+    }, 1000);
+  }
+  componentDidUpdate() {
+    console.log("updated");
+  }
+  changeColor() {
+    let { color } = this.state;
+    let { iterator } = this.state;
+    if (iterator === color.length) {
+      // clearInterval(this.divyanshu);
+      this.setState({ currentColor: color[iterator], iterator: 0 });
+    } else {
+      this.setState({ currentColor: color[iterator], iterator: iterator + 1 });
+    }
+  }
+  componentWillUnmount() {
+    clearInterval(this.divyanshu);
+  }
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <div
+          className="circle"
+          style={{ backgroundColor: this.state.currentColor }}
+        />
       </div>
     );
   }
 }
 
-export default App;
+export default Circle
+
